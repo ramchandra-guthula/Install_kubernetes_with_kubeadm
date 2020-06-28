@@ -1,0 +1,51 @@
+---
+- name: install the latest version of Docker
+  yum:
+    name: docker
+    state: latest
+
+- name: enabling docker service
+  service:
+    name: docker
+    enabled: yes
+
+- name: Starting docker service
+  service:
+    name: docker
+    state: started
+
+- name: Adding kubernetes repo to yum
+  yum_repository:
+    name: Kubernetes
+    description: RPMforge YUM repo
+    file: external_repos
+    baseurl: https://packages.cloud.google.com/yum/repos/kubernetes-el7-\$basearch
+    mirrorlist: http://mirrorlist.repoforge.org/el7/mirrors-rpmforge
+    enabled: yes
+    gpgcheck: yes
+    repo_gpgcheck: yes
+    gpgkey: https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+    exclude: kubelet kubeadm kubectl
+
+- name: Put SELinux in permissive mode, logging actions that would be blocked.
+  selinux:
+    policy: targeted
+    state: permissive
+
+- name: updating /etc/selinux/config file
+  command: "sed -i 's/^SELINUX=enforcing$/SELINUX=permissive/' /etc/selinux/config"
+
+- name: installing kubelet kubeadm kubectl
+  yum:
+    name: "{{ packages }}"
+  vars:
+    packages:
+    - kubelet
+    - kubeadm
+    - kubectl
+    disable_excludes: kubernetes
+
+- name: enabling kubelet service
+  service:
+    name: kubelet
+    enabled: yes

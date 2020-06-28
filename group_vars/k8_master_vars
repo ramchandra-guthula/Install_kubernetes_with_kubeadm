@@ -1,0 +1,6 @@
+vpc_id: "vpc-c50eedb8"
+region: "us-east-1"
+private_key: "devops"
+instance_type: "t2.large"
+subnet_id: "subnet-8bfe23aa"
+image_id: "ami-09d95fab7fff3776c"

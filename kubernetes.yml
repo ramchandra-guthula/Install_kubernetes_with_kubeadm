@@ -1,0 +1,19 @@
+---
+- name: creating ec2 instance
+  hosts: localhost 
+  connection: local
+  vars_files:
+  - group_vars/k8_master_vars
+  roles:
+    - ec2-instane 
+
+
+- name: configure and deploy the webservers and application code
+  hosts: k8_master
+  remote_user: ec2-user
+  become: true
+  become_method: sudo
+  gather_facts: True
+  
+  roles:
+    - kube-master 

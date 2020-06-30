@@ -17,8 +17,8 @@
 - name: Adding kubernetes repo to yum
   yum_repository:
     name: Kubernetes
-    description: RPMforge YUM repo
-    file: external_repos
+    description: Kubernetes
+    file: kubernetes
     baseurl: https://packages.cloud.google.com/yum/repos/kubernetes-el7-\$basearch
     mirrorlist: http://mirrorlist.repoforge.org/el7/mirrors-rpmforge
     enabled: yes
@@ -28,22 +28,26 @@
     exclude: kubelet kubeadm kubectl
 
 - name: Put SELinux in permissive mode, logging actions that would be blocked.
-  selinux:
-    policy: targeted
-    state: permissive
+  #command: "setenforce 0"
+  shell: "setenforce 0"
+  ignore_errors: true
 
 - name: updating /etc/selinux/config file
   command: "sed -i 's/^SELINUX=enforcing$/SELINUX=permissive/' /etc/selinux/config"
 
+
 - name: installing kubelet kubeadm kubectl
-  yum:
-    name: "{{ packages }}"
-  vars:
-    packages:
-    - kubelet
-    - kubeadm
-    - kubectl
-    disable_excludes: kubernetes
+  command: yum install -y kubelet kubeadm kubectl --disableexcludes=kubernetes
+
+#- name: installing kubelet kubeadm kubectl
+#  yum:
+#    name: "{{ packages }}"
+#  vars:
+#    packages:
+#    - kubelet
+#    - kubeadm
+#    - kubectl
+#    disable_excludes: kubernetes
 
 - name: enabling kubelet service
   service:

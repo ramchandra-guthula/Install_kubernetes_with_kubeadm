@@ -2,7 +2,7 @@
 - name: Security group for Kubernetes master
   ec2_group:
     name: Kuberentes-master-SG
-    description: Incoming connections to K8's master
+    description: Incoming connections to kube master
     vpc_id: "{{ vpc_id }}"
     region: "{{ region }}"
     rules:

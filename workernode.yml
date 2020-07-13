@@ -1,0 +1,5 @@
+- name: installing  worker node tools
+  vars_files:
+  - group_vars/k8_master_vars
+  roles:
+    - adding-node

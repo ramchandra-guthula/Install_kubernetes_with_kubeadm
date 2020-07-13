@@ -1,0 +1,48 @@
+---
+- name: install the latest version of Docker
+  yum:
+    name: docker
+    state: latest
+
+- name: enabling docker service
+  service:
+    name: docker
+    enabled: yes
+
+- name: Starting docker service
+  service:
+    name: docker
+    state: started
+
+- name: Adding kubernetes repo to yum
+  yum_repository:
+    name: Kubernetes
+    description: Kubernetes
+    file: kubernetes
+    baseurl: https://packages.cloud.google.com/yum/repos/kubernetes-el7-\$basearch
+    mirrorlist: http://mirrorlist.repoforge.org/el7/mirrors-rpmforge
+    enabled: yes
+    gpgcheck: yes
+    repo_gpgcheck: yes
+    gpgkey: https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+    exclude: kubelet  kubectl
+
+- name: installing kubelet kubeadm kubectl
+  command: yum install -y kubelet  kubectl --disableexcludes=kubernetes
+
+- name: enabling kubelet service
+  service:
+    name: kubelet
+    enabled: yes
+
+- name: publishing kudeadm output as a fact
+  command: cat kubeadm_out.txt | grep -i "kubeadm join"
+  register: __kubeinit_token
+
+- name: facts
+  set_fact:
+     token: "{{ __kubeinit_token.stdout }}"
+
+- name: adding to Kube master
+  command: "{{ token }}"
+

@@ -33,8 +33,6 @@
     assign_public_ip: yes
     count_tag:
       Name: kubernetes_worker_node
-    with_sequence:
-      count: 8
     exact_count: 2
     region: "{{ region }}"
     instance_tags:
@@ -45,20 +43,37 @@
     var: __k8_node_IP
 
 - set_fact:
-    k8_node_IP: "{{ __k8_node_IP['instances'][0]['public_ip'] }}"
+    k8_node_01: "{{ __k8_node_IP['instances'][0]['public_ip'] }}"
   when: __k8_node_IP is changed
 
 - set_fact:
-    k8_node_IP: "{{  __k8_node_IP['tagged_instances'][0]['public_ip']  }}"
+    k8_node_01: "{{  __k8_node_IP['tagged_instances'][0]['public_ip']  }}"
   when: __k8_node_IP is not changed
 
 - name: addding ansible group
   add_host:
-    name: '{{ k8_node_IP }}'
+    name: '{{ k8_node_01 }}'
     groupname: k8_node
+
+- set_fact:
+    k8_node_02: "{{ __k8_node_IP['instances'][1]['public_ip'] }}"
+  when: __k8_node_IP is changed
+
+- set_fact:
+    k8_node_02: "{{  __k8_node_IP['tagged_instances'][1]['public_ip']  }}"
+  when: __k8_node_IP is not changed
+
+- name: addding ansible group
+  add_host:
+    name: '{{ k8_node_02 }}'
+    groupname: k8_node
+
+
+- debug:
+    msg: "Ip address of node {{ groups['k8_node'][1] }}"
 
 - name: wait for SSH to come up
   wait_for:
-    host: "{{ k8_node_IP }}"
+    host: "{{ k8_node_01 }}"
     port: 22
     state: started

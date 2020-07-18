@@ -1,29 +1,45 @@
 ---
-- name: creating ec2 instance
+- name: creating kube master instance
   hosts: localhost 
   connection: local
   vars_files:
   - group_vars/k8_master_vars
   roles:
-    - ec2-instane 
+    - kube-master-create 
 
 
-- name: configuring worker node
+- name: configuring master node
   hosts: k8_master
   remote_user: ec2-user
   become: true
   become_method: sudo
-  gather_facts: True
   vars_files:
-  - group_vars/k8_master_vars
-  
+  - group_vars/k8_master_vars 
   roles:
-    - kube-master
+    - kube-master-install
 
-- name: Creating worker node
+- name: Creating worker nodes
   hosts: localhost
   connection: local
   vars_files:
   - group_vars/k8_master_vars
   roles:
-    - worker-node 
+    - worker-nodes-create
+
+- name: Installing  worker node tools
+  hosts: "{{ groups['k8_node'][0] }}" 
+  become: true
+  become_method: sudo
+  vars_files:
+  - group_vars/k8_master_vars
+  roles:
+    - worker-node-install
+
+- name: Installing  worker node tools
+  hosts: "{{ groups['k8_node'][1] }}"
+  become: true
+  become_method: sudo
+  vars_files:
+  - group_vars/k8_master_vars
+  roles:
+    - worker-node-install

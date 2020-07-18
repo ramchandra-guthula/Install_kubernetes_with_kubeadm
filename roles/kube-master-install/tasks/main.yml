@@ -11,8 +11,9 @@
 - name: Update kernel settings
   shell: "echo 'net.bridge.bridge-nf-call-iptables=1' | sudo tee -a /etc/sysctl.conf"
 
-#- name: restartng kernel settings
-#  command: "sysctl -p" 
+- name: restartng kernel settings
+  command: "sysctl -p" 
+  ignore_errors: true 
 
 
 - name: install the latest version of Docker
@@ -67,6 +68,12 @@
 - name: saving kubeadm output to a file
   local_action: copy content={{ __kubeadm_output.stdout }} dest="{{ files_path }}/kubeadm_init_output"
 
-- name: installing Pod network CNI
-  command: kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
+- name: Exporting kubeconfig to env variables
+  shell: 'echo "export KUBECONFIG=/etc/kubernetes/admin.conf" >> /etc/environment'
 
+- name: installing Pod network CNI
+  command: "kubectl apply -f https://docs.projectcalico.org/v3.14/manifests/calico.yaml"
+  environment:
+     KUBECONFIG: /etc/kubernetes/admin.conf
+  tags:
+  - test

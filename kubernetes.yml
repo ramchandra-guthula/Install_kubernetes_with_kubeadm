@@ -24,7 +24,7 @@
   vars_files:
   - group_vars/k8_master_vars
   roles:
-    - worker-nodes-create
+    - worker-node-create
 
 - name: Installing  worker node tools
   hosts: "{{ groups['k8_node'][0] }}" 

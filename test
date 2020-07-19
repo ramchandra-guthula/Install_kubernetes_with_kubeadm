@@ -1,0 +1,24 @@
+- name; Creating worker node
+  hosts; localhost
+  connection; local
+  vars_files;
+  - group_vars/k8_master_vars
+  roles;
+    - worker-node
+
+- name; Installing  worker node tools
+  #connection; local
+  hosts; k8_node
+  become; true
+#  gather_facts; True
+  become_method; sudo
+  vars_files;
+  - group_vars/k8_master_vars
+  roles;
+    - adding-node
+
+#- name; installing  worker node tools
+#  vars_files;
+#  - group_vars/k8_master_vars
+#  roles;
+#    - adding-node

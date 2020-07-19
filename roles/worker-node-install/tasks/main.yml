@@ -1,79 +1,66 @@
 ---
-- name: Security group for WorkerNode
-  ec2_group:
-    name: Kuberentes-woker-node-SG
-    description: Incoming connections to Worker Node
-    vpc_id: "{{ vpc_id }}"
-    region: "{{ region }}"
-    rules:
-      - proto: tcp
-        ports:
-        - 443
-        cidr_ip: 0.0.0.0/0
-        rule_desc: API server
-      - proto: tcp
-        ports:
-        - 22
-        cidr_ip: 0.0.0.0/0
-        rule_desc: allowing SSH connection
-  register: __Node_SG
+- name: install the latest version of Docker
+  yum:
+    name: docker
+    state: latest
 
-- debug:
-    msg: "securtiy groupID is : {{ __Node_SG.group_id }}"
+- name: enabling docker service
+  service:
+    name: docker
+    enabled: yes
 
-- name: Creating instance for Kubernetes Worker Node
-  ec2:
-    key_name: "{{ private_key }}"
-    group_id: "{{ __Node_SG.group_id }}"
-    instance_type: t2.micro
-    image: "{{ image_id }}"
-    wait: yes
-    wait_timeout: 200
-    vpc_subnet_id: "{{ subnet_id }}"
-    assign_public_ip: yes
-    count_tag:
-      Name: kubernetes_worker_node
-    exact_count: 2
-    region: "{{ region }}"
-    instance_tags:
-        Name: kubernetes_worker_node
-  register: __k8_node_IP
-
-- debug:
-    var: __k8_node_IP
-
-- set_fact:
-    k8_node_01: "{{ __k8_node_IP['instances'][0]['public_ip'] }}"
-  when: __k8_node_IP is changed
-
-- set_fact:
-    k8_node_01: "{{  __k8_node_IP['tagged_instances'][0]['public_ip']  }}"
-  when: __k8_node_IP is not changed
-
-- name: addding ansible group
-  add_host:
-    name: '{{ k8_node_01 }}'
-    groupname: k8_node
-
-- set_fact:
-    k8_node_02: "{{ __k8_node_IP['instances'][1]['public_ip'] }}"
-  when: __k8_node_IP is changed
-
-- set_fact:
-    k8_node_02: "{{  __k8_node_IP['tagged_instances'][1]['public_ip']  }}"
-  when: __k8_node_IP is not changed
-
-- name: addding ansible group
-  add_host:
-    name: '{{ k8_node_02 }}'
-    groupname: k8_node
-
-
-- debug:
-    msg: "Ip address of node {{ groups['k8_node'][1] }}"
-
-- name: wait for SSH to come up
-  wait_for:
-    host: "{{ k8_node_01 }}"
-    port: 22
+- name: Starting docker service
+  service:
+    name: docker
     state: started
+
+- name: Adding kubernetes repo to yum
+  yum_repository:
+    name: Kubernetes
+    description: Kubernetes
+    file: kubernetes
+    baseurl: https://packages.cloud.google.com/yum/repos/kubernetes-el7-\$basearch
+    mirrorlist: http://mirrorlist.repoforge.org/el7/mirrors-rpmforge
+    enabled: yes
+    gpgcheck: yes
+    repo_gpgcheck: yes
+    gpgkey: https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+    exclude: kubelet kubeadm kubectl
+
+
+- name: installing kubelet kubeadm kubectl
+  command: yum install -y kubelet kubeadm kubectl --disableexcludes=Kubernetes
+
+- name: enabling kubelet service
+  service:
+    name: kubelet
+    enabled: yes
+
+#- name: publishing kudeadm output as a fact
+#  shell: 'cat {{ files_path }}/kubeadm_init_output | grep  "kubeadm join"'
+#  register: __kubeinit_token
+#
+#- debug:
+#    var: __kubeinit_token.stdout
+#
+#- name: facts
+#  set_fact:
+#     token: "{{ __kubeinit_token.stdout }}"
+#
+#- name: adding to Kube master
+#  shell: "{{ token }}"
+
+- name: Generate join token
+  shell: kubeadm token create --print-join-command
+  register: kubeadm_join_cmd
+  delegate_to: "{{ groups['k8_master'][0] }}"
+
+- set_fact:
+    kubeadm_join: "{{ kubeadm_join_cmd.stdout }}"
+
+- name: Run kubeadm join
+  shell: "{{ kubeadm_join }}"
+
+- pause:
+    prompt: "Wait for containers to Pull and install"
+

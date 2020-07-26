@@ -63,4 +63,5 @@
 
 - pause:
     prompt: "Wait for containers to Pull and install"
+    minutes: 3
 

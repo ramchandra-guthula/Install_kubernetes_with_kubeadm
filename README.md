@@ -5,7 +5,6 @@
 **Prerequsites**
 - EC2 instance with a role having access to create EC2, SecurityGroup 
 - Private key with devops.pem tag place it in project directory
-~~- Update ``` group_vars/k8_master_vars ```  with your aws account resource ID's ~~
 - keep below parameters Handy 
    - vpc_id
    - region
@@ -16,9 +15,8 @@
 **How to use?**
 
 ```
-git clone https://github.com/ramchandra-guthula/kubernetes_with_kubeadm.git
-cd kubernetes_with_kubeadm
-~~ ansible-playbook  --private-key devops.pem kubernetes.yml ~~
+git clone https://github.com/ramchandra-guthula/Install_kubernetes_with_kubeadm.git
+cd Install_kubernetes_with_kubeadm
 sh create_cluster.sh  #Pass the parameters what script has promted for
 
 ```

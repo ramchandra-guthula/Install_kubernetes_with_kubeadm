@@ -49,7 +49,7 @@ read subnet
 echo "Enter your Image ID =>"
 read image
 
-echo -e "Creating cluster with following details \n \e[32m$vpc \n  \e[32m$region_name \n \e[32m$private_key_name \n \e[32m$subnet \n \e[32mimage \n"
+echo -e "Creating cluster with following details \n-\e[32m$vpc \n-\e[32m$region_name \n-\e[32m$private_key_name \n-\e[32m$subnet \n-\e[32mimage \n"
 
 
 ############## Running ansible command to create the cluster ##################

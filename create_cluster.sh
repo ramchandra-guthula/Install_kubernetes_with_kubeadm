@@ -68,4 +68,4 @@ echo -e "Creating cluster with following details \n-\e[32m$vpc \n-\e[32m$region_
 
 ############## Running ansible command to create the cluster ##################
 
-ansible-playbook  --private-key devops.pem -e vpc_id=$vpc  -e region=$region_name -e private_key=$private_key_name -e subnet_id=$subnet -e image=$image  kubernetes.yml
+ansible-playbook  --private-key $private_key_name.pem -e vpc_id=$vpc  -e region=$region_name -e private_key=$private_key_name -e subnet_id=$subnet -e image=$image  kubernetes.yml

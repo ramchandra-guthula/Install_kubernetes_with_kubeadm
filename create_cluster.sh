@@ -13,6 +13,19 @@ echo -e "============Good Ansible is already installed===================\n"
 fi
 }
 
+##################Installing Boto3###########################
+boto3_install(){
+pip show boto3 >> /dev/null
+if [ $? != 0 ];
+then
+yum install python-pip
+pip install boto3
+else 
+echo -e "============Boto3 is already Installed===================\n"
+fi
+}
+
+
 #####################Function to install Docker########################
 docker_install(){
 docker --version >> /dev/null
@@ -27,6 +40,7 @@ fi
 }
 ansible_install
 docker_install
+boto3_install
 
 
 echo "+------------------------------------------+"
@@ -49,7 +63,7 @@ read subnet
 echo "Enter your Image ID =>"
 read image
 
-echo -e "Creating cluster with following details \n-\e[32m$vpc \n-\e[32m$region_name \n-\e[32m$private_key_name \n-\e[32m$subnet \n-\e[32mimage \n"
+echo -e "Creating cluster with following details \n-\e[32m$vpc \n-\e[32m$region_name \n-\e[32m$private_key_name \n-\e[32m$subnet \n-\e[32m$image \n"
 
 
 ############## Running ansible command to create the cluster ##################

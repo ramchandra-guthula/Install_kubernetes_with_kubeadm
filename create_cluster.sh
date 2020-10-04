@@ -7,7 +7,7 @@ ansible_install(){
 ansible --version >> /dev/null
 if [ $? != 0 ];
 then
-sudo amazon-linux-extras install ansible2
+sudo amazon-linux-extras install ansible2 -y
 else 
 echo -e "============Good Ansible is already installed===================\n"
 fi
@@ -18,7 +18,7 @@ boto3_install(){
 pip show boto3 >> /dev/null
 if [ $? != 0 ];
 then
-yum install python-pip
+yum install python-pip -y
 pip install boto3
 else 
 echo -e "============Boto3 is already Installed===================\n"

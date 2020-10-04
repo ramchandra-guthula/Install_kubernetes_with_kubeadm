@@ -7,7 +7,7 @@ ansible_install(){
 ansible --version >> /dev/null
 if [ $? != 0 ];
 then
-yum install ansible -y
+sudo amazon-linux-extras install ansible2
 else 
 echo -e "============Good Ansible is already installed===================\n"
 fi

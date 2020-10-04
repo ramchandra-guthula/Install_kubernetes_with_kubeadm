@@ -20,6 +20,7 @@ if [ $? != 0 ];
 then
 yum install python-pip -y
 pip install boto3
+pip install boto
 else 
 echo -e "============Boto3 is already Installed===================\n"
 fi

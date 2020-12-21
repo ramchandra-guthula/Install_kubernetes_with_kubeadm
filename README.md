@@ -4,7 +4,7 @@
 
 **Prerequsites**
 - EC2 instance with a role having access to create EC2, SecurityGroup 
-- Private key with devops.pem tag place it in project directory
+- Private key with devops.pem tag place it in project directory(set the private key permissons to 400  ```chmod 400 private_key.pem``` )
 - keep below parameters Handy 
    - vpc_id
    - region
@@ -21,7 +21,7 @@ sh create_cluster.sh  #Pass the parameters what script has promted for
 
 ```
 
-**Resources creaated by this playbook**
+**Resources created by this playbook**
 - One Master node
 - Two worker nodes 
 

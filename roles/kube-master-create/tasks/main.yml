@@ -2,7 +2,7 @@
 - name: Security group for Kubernetes master
   ec2_group:
     name: Kuberentes-master-SG
-    description: Incomingconnections to kube master
+    description: Incoming connections to kube master
     vpc_id: "{{ vpc_id }}"
     region: "{{ region }}"
     rules:
@@ -37,36 +37,36 @@
         - 10252
         cidr_ip: 0.0.0.0/0
         rule_desc: Controller
-#       - proto: tcp
-#         ports:
-#         - 179
-#         cidr_ip: 0.0.0.0/0
-#         rule_desc: Calico required ports
-#       - proto: tcp
-#         ports:
-#         - 4789
-#         cidr_ip: 0.0.0.0/0
-#         rule_desc: Calico required ports
-#       - proto: tcp
-#         ports:
-#         - 5473
-#         cidr_ip: 0.0.0.0/0
-#         rule_desc: Calico required ports
-#       - proto: tcp
-#         ports:
-#         - 4789
-#         cidr_ip: 0.0.0.0/0
-#         rule_desc: Calico required ports
-#       - proto: tcp
-#         ports:
-#         - 10252
-#         cidr_ip: 0.0.0.0/0
-#         rule_desc: Calico required ports
-#       - proto: tcp
-#         ports:
-#         - 443
-#         cidr_ip: 0.0.0.0/0
-#         rule_desc: Calico required ports
+      - proto: tcp
+        ports:
+        - 179
+        cidr_ip: 0.0.0.0/0
+        rule_desc: Calico required ports
+      - proto: tcp
+        ports:
+        - 4789
+        cidr_ip: 0.0.0.0/0
+        rule_desc: Calico required ports
+      - proto: tcp
+        ports:
+        - 5473
+        cidr_ip: 0.0.0.0/0
+        rule_desc: Calico required ports
+      - proto: tcp
+        ports:
+        - 4789
+        cidr_ip: 0.0.0.0/0
+        rule_desc: Calico required ports
+      - proto: tcp
+        ports:
+        - 10252
+        cidr_ip: 0.0.0.0/0
+        rule_desc: Calico required ports
+      - proto: tcp
+        ports:
+        - 443
+        cidr_ip: 0.0.0.0/0
+        rule_desc: Calico required ports
    
   register: __k8_master_SG
   tags:

@@ -37,22 +37,22 @@
         - 10252
         cidr_ip: 0.0.0.0/0
         rule_desc: Controller
-       - proto: tcp
+      - proto: tcp
         ports:
         - 179
         cidr_ip: 0.0.0.0/0
         rule_desc: Calico required ports
-       - proto: tcp
+      - proto: tcp
         ports:
         - 4789
         cidr_ip: 0.0.0.0/0
         rule_desc: Calico required ports
-       - proto: tcp
+      - proto: tcp
         ports:
         - 5473
         cidr_ip: 0.0.0.0/0
         rule_desc: Calico required ports
-       - proto: tcp
+      - proto: tcp
         ports:
         - 4789
         cidr_ip: 0.0.0.0/0

@@ -50,7 +50,7 @@ if [ -f $PWD/devops.pem ]
     chmod 400 $PWD/devops.pem
   else
     echo -e "========================== Devops Keypar doesn't exist ==================\n"
-    break
+    exit 1
 fi
 
 echo "+------------------------------------------+"

@@ -4,7 +4,7 @@
 
 **Prerequsites**
 - EC2 instance with a role having access to create EC2, SecurityGroup 
-- Private key with devops.pem tag place it in project directory(set the private key permissons to 400  ```chmod 400 private_key.pem``` )
+- Private key with name devops.pem tag place it in same project directory, Just `cat` your pem file content and create a new file name devops.pem in your jump server instance
 - keep below parameters Handy 
    - vpc_id
    - region

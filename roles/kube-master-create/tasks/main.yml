@@ -42,7 +42,7 @@
         - 179
         cidr_ip: 0.0.0.0/0
         rule_desc: Calico required ports
-      - proto: tcp
+      - proto: udp
         ports:
         - 4789
         cidr_ip: 0.0.0.0/0
@@ -54,12 +54,7 @@
         rule_desc: Calico required ports
       - proto: tcp
         ports:
-        - 4789
-        cidr_ip: 0.0.0.0/0
-        rule_desc: Calico required ports
-      - proto: tcp
-        ports:
-        - 10252
+        - 4
         cidr_ip: 0.0.0.0/0
         rule_desc: Calico required ports
       - proto: tcp

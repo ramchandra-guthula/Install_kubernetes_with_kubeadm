@@ -37,6 +37,37 @@
         - 10252
         cidr_ip: 0.0.0.0/0
         rule_desc: Controller
+       - proto: tcp
+        ports:
+        - 179
+        cidr_ip: 0.0.0.0/0
+        rule_desc: Calico required ports
+       - proto: tcp
+        ports:
+        - 4789
+        cidr_ip: 0.0.0.0/0
+        rule_desc: Calico required ports
+       - proto: tcp
+        ports:
+        - 5473
+        cidr_ip: 0.0.0.0/0
+        rule_desc: Calico required ports
+       - proto: tcp
+        ports:
+        - 4789
+        cidr_ip: 0.0.0.0/0
+        rule_desc: Calico required ports
+      - proto: tcp
+        ports:
+        - 10252
+        cidr_ip: 0.0.0.0/0
+        rule_desc: Calico required ports
+      - proto: tcp
+        ports:
+        - 443
+        cidr_ip: 0.0.0.0/0
+        rule_desc: Calico required ports
+   
   register: __k8_master_SG
   tags:
     - Kubernetes_master_SG

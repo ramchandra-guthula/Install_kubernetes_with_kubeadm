@@ -55,8 +55,8 @@ fi
 
 echo "+------------------------------------------+"
 printf "| Creating Kube cluster with Kubeadm in AWS |\n" "`date`"
-echo "|                                          |"
-printf "| Press any key to proceed Further |\n" "$@"
+echo "|                                             |"
+printf "|     Press any key to proceed Further      |\n" "$@"
 echo "+------------------------------------------+"
 read anykey
 

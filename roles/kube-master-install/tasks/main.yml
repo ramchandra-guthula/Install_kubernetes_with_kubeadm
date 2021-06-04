@@ -62,7 +62,7 @@
     enabled: yes
 
 - name: Initializing  control-plane node
-  command: kubeadm init --pod-network-cidr=10.244.0.0/16
+  command: kubeadm init --pod-network-cidr=192.168.0.0/16
   register: __kubeadm_output
 
 - name: saving kubeadm output to a file

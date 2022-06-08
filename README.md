@@ -1,5 +1,11 @@
 ## Ansible playbook to deploy kubernetes cluster with Kubeadm 
 
+![GitHub forks](https://img.shields.io/github/forks/ramchandra-guthula/Install_kubernetes_with_kubeadm?style=social)
+![GitHub pull requests](https://img.shields.io/github/issues-pr/ramchandra-guthula/Install_kubernetes_with_kubeadm)
+![env](https://img.shields.io/badge/env-aws-orange)
+![anisble](https://img.shields.io/badge/ansible-2.9-orange)
+![kubernetes](https://img.shields.io/badge/kubernetes-1.21-blue)
+
    Kubernetes is a portable, extensible, open-source platform for managing containerized workloads and services, that facilitates both declarative configuration and automation. It has a large, rapidly growing ecosystem. Kubernetes services, support, and tools are widely available.
 
 **Prerequsites**
